@@ -58,5 +58,21 @@ pipeline {
                 }
             }
         }
+        stage("Trigger CD Pipeline") {
+            steps {
+                build job: 'gitops-register-app-cd',
+                    parameters: [
+                        string(name: 'IMAGE_TAG', value: "${RELEASE}")
+                    ]
+            }
+        }
+        stage("Cleanup Artifacts") {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest"
+                }
+            }
+        }
     }
 }
