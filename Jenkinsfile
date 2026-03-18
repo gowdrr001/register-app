@@ -61,7 +61,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    docker.withRegistry('', 'gowdrr001') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'gowdrr001') {
                         def docker_image = docker.build("${IMAGE_NAME}")
                         docker_image.push("${RELEASE}")
                         docker_image.push('latest')
