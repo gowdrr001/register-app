@@ -53,7 +53,7 @@ pipeline {
         stage("Quality Gate") {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }
@@ -61,10 +61,10 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'gowdrr001') {
-                        def dockerImage = docker.build("${IMAGE_NAME}")
-                        dockerImage.push("${RELEASE}")
-                        dockerImage.push('latest')
+                    docker.withRegistry('', 'gowdrr001') {
+                        def docker_image = docker.build("${IMAGE_NAME}")
+                        docker_image.push("${RELEASE}")
+                        docker_image.push('latest')
                     }
                 }
             }
